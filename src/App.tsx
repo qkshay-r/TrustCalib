@@ -27,7 +27,7 @@ import {
   PlayCircle,
   ChevronDown
 } from "lucide-react";
-import { Stimulus } from "./stimuli";
+import { Stimulus, STIMULI } from "./stimuli";
 
 type StudyStep = "DASHBOARD" | "IDENTIFY" | "CONSENT" | "INSTRUCTIONS" | "PRACTICE_INTRO" | "TASK" | "FINISHED" | "RESULTS" | "MANAGE_STIMULI" | "PRACTICE_COMPLETE";
 type Condition = "BASELINE" | "SOCIAL" | "CONFIDENCE";
@@ -81,10 +81,12 @@ export default function App() {
   const fetchStimuli = async () => {
     try {
       const res = await fetch("/api/stimuli");
+      if (!res.ok) throw new Error("API unavailable");
       const data = await res.json();
       setStimuli(data);
     } catch (error) {
-      console.error("Failed to fetch stimuli:", error);
+      console.warn("API unavailable, using bundled stimuli");
+      setStimuli(STIMULI);
     }
   };
 
