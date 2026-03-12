@@ -1,0 +1,5 @@
+{
+  "name": "Remix: Trust Calibration Study Platform",
+  "description": "An HCI research interface for conducting between-subjects studies on human-AI trust calibration in programming tasks.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Cormorant Garamond", serif;
+  
+  --color-claude-bg: #171717;
+  --color-claude-card: #212121;
+  --color-claude-text: #E3E3E3;
+  --color-claude-muted: #8E8E8E;
+  --color-claude-border: #2F2F2F;
+}
+
+@layer base {
+  body {
+    @apply bg-claude-bg text-claude-text antialiased;
+  }
+}
