@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  CheckCircle, 
-  XCircle, 
-  Info, 
-  Users, 
-  BrainCircuit, 
-  ChevronRight, 
+import {
+  CheckCircle,
+  XCircle,
+  Info,
+  Users,
+  BrainCircuit,
+  ChevronRight,
   Terminal,
   Check,
   Send,
@@ -64,7 +64,7 @@ export default function App() {
   const [currentTrial, setCurrentTrial] = useState(0);
   const [startTime, setStartTime] = useState(0);
   const [responses, setResponses] = useState<any[]>([]);
-  
+
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [showDecisionButtons, setShowDecisionButtons] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -154,7 +154,7 @@ export default function App() {
     if (!stimulus) return null;
     if (condition === "SOCIAL") {
       return (
-        <div className="mt-2 text-[11px] text-blue-600 font-medium flex items-center gap-1.5 opacity-80">
+        <div className="mt-2 text-[11px] text-amber-300 font-medium flex items-center gap-1.5">
           <Users className="w-3 h-3" />
           {stimulus.socialProof}% of developers accepted this response.
         </div>
@@ -163,9 +163,8 @@ export default function App() {
       const isHigh = stimulus.aiConfidence === "High";
       const isLow = stimulus.aiConfidence === "Low";
       return (
-        <div className={`mt-2 text-[11px] font-bold flex items-center gap-1.5 ${
-          isHigh ? "text-emerald-600" : isLow ? "text-rose-600" : "text-amber-600"
-        }`}>
+        <div className={`mt-2 text-[11px] font-bold flex items-center gap-1.5 ${isHigh ? "text-emerald-400" : isLow ? "text-rose-400" : "text-amber-400"
+          }`}>
           {isHigh ? <CheckCircle className="w-3 h-3" /> : isLow ? <XCircle className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
           {isHigh ? "✅ High Confidence" : isLow ? "❌ Low Confidence" : "⚠️ Medium Confidence"}
         </div>
@@ -178,7 +177,7 @@ export default function App() {
     const stimulus = stimuli[index];
     if (!stimulus) return;
     setShowDecisionButtons(false);
-    
+
     const userMsg: Message = {
       role: "user",
       content: `Can you write a ${stimulus.language} snippet that does the following: ${stimulus.explanation}`,
@@ -204,7 +203,7 @@ export default function App() {
     const responseTime = endTime - startTime;
     const stimulus = stimuli[currentTrial];
     if (!stimulus) return;
-    
+
     const trialData = {
       participant_id: participantId,
       trial_index: currentTrial,
@@ -228,7 +227,7 @@ export default function App() {
 
     if (currentTrial < stimuli.length - 1) {
       const nextIndex = currentTrial + 1;
-      
+
       // If we just finished practice trials and the next one is NOT practice
       if (stimulus.isPractice && !stimuli[nextIndex].isPractice) {
         setStep("PRACTICE_COMPLETE");
@@ -282,8 +281,8 @@ export default function App() {
   };
 
   const calculateStats = (pTrials: TrialRecord[], pCondition?: string) => {
-    if (pTrials.length === 0) return { 
-      accuracy: 0, 
+    if (pTrials.length === 0) return {
+      accuracy: 0,
       avgTime: 0,
       acceptanceRate: 0,
       fpr: 0,
@@ -291,15 +290,15 @@ export default function App() {
       mismatchAccuracy: 0,
       cueFollowingRate: 0
     };
-    
+
     // Main trials only (exclude practice)
     const mainTrials = pTrials.filter(t => {
       const stim = stimuli.find(s => s.id === t.stimulus_id);
       return stim && !stim.isPractice;
     }).sort((a, b) => a.trial_index - b.trial_index);
 
-    if (mainTrials.length === 0) return { 
-      accuracy: 0, 
+    if (mainTrials.length === 0) return {
+      accuracy: 0,
       avgTime: 0,
       acceptanceRate: 0,
       fpr: 0,
@@ -319,8 +318,8 @@ export default function App() {
 
     // Mismatch Accuracy (Tasks 8, 9, 10)
     const mismatchTrials = mainTrials.slice(7, 10);
-    const correctMismatch = mismatchTrials.filter(t => 
-      (t.decision === "ACCEPT" && t.correctness === 1) || 
+    const correctMismatch = mismatchTrials.filter(t =>
+      (t.decision === "ACCEPT" && t.correctness === 1) ||
       (t.decision === "REJECT" && t.correctness === 0)
     ).length;
 
@@ -378,11 +377,11 @@ export default function App() {
             <p className="text-[9px] font-mono uppercase tracking-widest opacity-40 mt-1">HCI Research Platform</p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-4">
           {step === "TASK" && (
-            <select 
-              value={condition} 
+            <select
+              value={condition}
               onChange={(e) => setCondition(e.target.value as Condition)}
               className="px-3 py-1 bg-white/5 rounded-full text-[10px] font-mono uppercase tracking-widest border-none focus:ring-1 focus:ring-white/20 cursor-pointer appearance-none text-claude-text"
             >
@@ -402,7 +401,7 @@ export default function App() {
       <main className="max-w-4xl mx-auto px-4 py-8 md:py-16">
         <AnimatePresence mode="wait">
           {step === "DASHBOARD" && (
-            <motion.div 
+            <motion.div
               key="dashboard"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -415,7 +414,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button 
+                <button
                   onClick={initNewSession}
                   className="group p-8 bg-claude-card border border-claude-border text-claude-text rounded-3xl text-left hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between h-64"
                 >
@@ -428,7 +427,7 @@ export default function App() {
                   </div>
                 </button>
 
-                <button 
+                <button
                   onClick={() => { fetchResults(); setStep("RESULTS"); }}
                   className="group p-8 bg-claude-card border border-claude-border text-claude-text rounded-3xl text-left hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between h-64 shadow-sm"
                 >
@@ -441,7 +440,7 @@ export default function App() {
                   </div>
                 </button>
 
-                <button 
+                <button
                   onClick={() => setStep("MANAGE_STIMULI")}
                   className="group p-8 bg-claude-card border border-claude-border text-claude-text rounded-3xl text-left hover:shadow-2xl hover:-translate-y-1 transition-all flex flex-col justify-between h-64 shadow-sm"
                 >
@@ -478,7 +477,7 @@ export default function App() {
           )}
 
           {step === "MANAGE_STIMULI" && (
-            <motion.div 
+            <motion.div
               key="manage_stimuli"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -501,73 +500,73 @@ export default function App() {
                       <div className="space-y-4">
                         <div className="space-y-2">
                           <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Question / Prompt</label>
-                          <textarea 
+                          <textarea
                             value={editingStimulus.explanation}
                             onChange={(e) => setEditingStimulus({ ...editingStimulus, explanation: e.target.value })}
                             className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm min-h-[100px] text-claude-text"
                           />
                         </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Code Snippet</label>
+                          <textarea
+                            value={editingStimulus.code}
+                            onChange={(e) => setEditingStimulus({ ...editingStimulus, code: e.target.value })}
+                            className="w-full p-4 bg-black/40 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-xs font-mono min-h-[150px] text-white"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div className="space-y-2">
-                            <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Code Snippet</label>
-                            <textarea 
-                              value={editingStimulus.code}
-                              onChange={(e) => setEditingStimulus({ ...editingStimulus, code: e.target.value })}
-                              className="w-full p-4 bg-black/40 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-xs font-mono min-h-[150px] text-white"
+                            <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Language</label>
+                            <input
+                              type="text"
+                              value={editingStimulus.language}
+                              onChange={(e) => setEditingStimulus({ ...editingStimulus, language: e.target.value })}
+                              className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
                             />
                           </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Language</label>
-                              <input 
-                                type="text"
-                                value={editingStimulus.language}
-                                onChange={(e) => setEditingStimulus({ ...editingStimulus, language: e.target.value })}
-                                className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">AI Confidence</label>
-                              <select 
-                                value={editingStimulus.aiConfidence}
-                                onChange={(e) => setEditingStimulus({ ...editingStimulus, aiConfidence: e.target.value as any })}
-                                className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
-                              >
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
-                              </select>
-                            </div>
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Correctness</label>
-                              <select 
-                                value={editingStimulus.isCorrect ? "true" : "false"}
-                                onChange={(e) => setEditingStimulus({ ...editingStimulus, isCorrect: e.target.value === "true" })}
-                                className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
-                              >
-                                <option value="true">Correct</option>
-                                <option value="false">Incorrect (Buggy)</option>
-                              </select>
-                            </div>
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Trial Type</label>
-                              <select 
-                                value={editingStimulus.isPractice ? "true" : "false"}
-                                onChange={(e) => setEditingStimulus({ ...editingStimulus, isPractice: e.target.value === "true" })}
-                                className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
-                              >
-                                <option value="false">Main Study</option>
-                                <option value="true">Practice Trial</option>
-                              </select>
-                            </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">AI Confidence</label>
+                            <select
+                              value={editingStimulus.aiConfidence}
+                              onChange={(e) => setEditingStimulus({ ...editingStimulus, aiConfidence: e.target.value as any })}
+                              className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
+                            >
+                              <option value="High">High</option>
+                              <option value="Medium">Medium</option>
+                              <option value="Low">Low</option>
+                            </select>
                           </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Correctness</label>
+                            <select
+                              value={editingStimulus.isCorrect ? "true" : "false"}
+                              onChange={(e) => setEditingStimulus({ ...editingStimulus, isCorrect: e.target.value === "true" })}
+                              className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
+                            >
+                              <option value="true">Correct</option>
+                              <option value="false">Incorrect (Buggy)</option>
+                            </select>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Trial Type</label>
+                            <select
+                              value={editingStimulus.isPractice ? "true" : "false"}
+                              onChange={(e) => setEditingStimulus({ ...editingStimulus, isPractice: e.target.value === "true" })}
+                              className="w-full p-4 bg-white/5 rounded-xl border border-white/10 focus:ring-1 focus:ring-white/20 text-sm text-claude-text"
+                            >
+                              <option value="false">Main Study</option>
+                              <option value="true">Practice Trial</option>
+                            </select>
+                          </div>
+                        </div>
                         <div className="flex gap-2 pt-2">
-                          <button 
+                          <button
                             onClick={() => updateStimulus(editingStimulus)}
                             className="flex-1 flex items-center justify-center gap-2 bg-white text-black py-3 rounded-xl text-sm font-medium hover:bg-emerald-600 hover:text-white transition-all"
                           >
                             <Save className="w-4 h-4" /> Save Changes
                           </button>
-                          <button 
+                          <button
                             onClick={() => setEditingStimulus(null)}
                             className="px-6 py-3 bg-white/5 rounded-xl text-sm font-medium hover:bg-white/10 transition-all"
                           >
@@ -597,7 +596,7 @@ export default function App() {
                             <code>{s.code}</code>
                           </pre>
                         </div>
-                        <button 
+                        <button
                           onClick={() => setEditingStimulus(s)}
                           className="p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-all"
                         >
@@ -612,7 +611,7 @@ export default function App() {
           )}
 
           {step === "RESULTS" && (
-            <motion.div 
+            <motion.div
               key="results"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -657,7 +656,7 @@ export default function App() {
 
                         return (
                           <React.Fragment key={p.id}>
-                            <tr 
+                            <tr
                               className="hover:bg-white/[0.02] transition-colors cursor-pointer"
                               onClick={() => setExpandedParticipant(isExpanded ? null : p.id)}
                             >
@@ -684,13 +683,13 @@ export default function App() {
                               <td className="p-4 text-right">
                                 {deletingId === p.id ? (
                                   <div className="flex items-center justify-end gap-2">
-                                    <button 
+                                    <button
                                       onClick={(e) => { e.stopPropagation(); deleteParticipant(p.id); }}
                                       className="px-2 py-1 bg-rose-600 text-white text-[10px] uppercase tracking-widest rounded-md hover:bg-rose-700 transition-colors"
                                     >
                                       Confirm
                                     </button>
-                                    <button 
+                                    <button
                                       onClick={(e) => { e.stopPropagation(); setDeletingId(null); }}
                                       className="px-2 py-1 bg-white/5 text-[10px] uppercase tracking-widest rounded-md hover:bg-white/10 transition-colors"
                                     >
@@ -698,7 +697,7 @@ export default function App() {
                                     </button>
                                   </div>
                                 ) : (
-                                  <button 
+                                  <button
                                     onClick={(e) => { e.stopPropagation(); setDeletingId(p.id); }}
                                     className="p-2 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors"
                                     title="Delete Session"
@@ -738,31 +737,31 @@ export default function App() {
                                     <div className="space-y-4">
                                       <h4 className="text-[10px] font-mono uppercase tracking-widest opacity-40">Trial Breakdown</h4>
                                       <div className="grid grid-cols-1 gap-2">
-                                      {pTrials.map((t, idx) => {
-                                        const stim = stimuli.find(s => s.id === t.stimulus_id);
-                                        return (
-                                          <div key={t.id} className="flex items-center justify-between p-3 bg-white/5 rounded-xl text-xs">
-                                            <div className="flex items-center gap-4">
-                                              <span className="opacity-30 font-mono">#{idx + 1}</span>
-                                              <div className="space-y-1">
-                                                <div className="flex items-center gap-2">
-                                                  <span className="font-medium">{stim?.language || t.stimulus_id}</span>
-                                                  <span className={`font-bold ${getDecisionColor(t.decision, t.correctness)}`}>
-                                                    {t.decision} {getDecisionIcon(t.decision, t.correctness)}
-                                                  </span>
-                                                </div>
-                                                <div className="opacity-50 text-[10px]">
-                                                  {getDecisionType(t.decision, t.correctness)}
+                                        {pTrials.map((t, idx) => {
+                                          const stim = stimuli.find(s => s.id === t.stimulus_id);
+                                          return (
+                                            <div key={t.id} className="flex items-center justify-between p-3 bg-white/5 rounded-xl text-xs">
+                                              <div className="flex items-center gap-4">
+                                                <span className="opacity-30 font-mono">#{idx + 1}</span>
+                                                <div className="space-y-1">
+                                                  <div className="flex items-center gap-2">
+                                                    <span className="font-medium">{stim?.language || t.stimulus_id}</span>
+                                                    <span className={`font-bold ${getDecisionColor(t.decision, t.correctness)}`}>
+                                                      {t.decision} {getDecisionIcon(t.decision, t.correctness)}
+                                                    </span>
+                                                  </div>
+                                                  <div className="opacity-50 text-[10px]">
+                                                    {getDecisionType(t.decision, t.correctness)}
+                                                  </div>
                                                 </div>
                                               </div>
+                                              <div className="text-right space-y-1">
+                                                <div className="font-mono">{t.response_time}ms</div>
+                                                <div className="text-[9px] opacity-30 uppercase tracking-wider">Latency</div>
+                                              </div>
                                             </div>
-                                            <div className="text-right space-y-1">
-                                              <div className="font-mono">{t.response_time}ms</div>
-                                              <div className="text-[9px] opacity-30 uppercase tracking-wider">Latency</div>
-                                            </div>
-                                          </div>
-                                        );
-                                      })}
+                                          );
+                                        })}
                                       </div>
                                     </div>
                                   </div>
@@ -780,7 +779,7 @@ export default function App() {
           )}
 
           {step === "IDENTIFY" && (
-            <motion.div 
+            <motion.div
               key="identify"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -798,8 +797,8 @@ export default function App() {
               <div className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-mono uppercase tracking-widest opacity-40">Identifier</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={participantId}
                     onChange={(e) => setParticipantId(e.target.value)}
                     placeholder="e.g. P_101"
@@ -807,7 +806,7 @@ export default function App() {
                     autoFocus
                   />
                 </div>
-                <button 
+                <button
                   disabled={!participantId.trim()}
                   onClick={() => setStep("CONSENT")}
                   className="w-full group flex items-center justify-center gap-3 bg-white text-black py-5 rounded-2xl text-lg font-medium hover:shadow-2xl hover:-translate-y-1 transition-all disabled:opacity-20 disabled:translate-y-0 disabled:shadow-none"
@@ -819,7 +818,7 @@ export default function App() {
           )}
 
           {step === "CONSENT" && (
-            <motion.div 
+            <motion.div
               key="consent"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -835,7 +834,7 @@ export default function App() {
                   <p>The first 2 tasks are practice trials to help you get familiar with the interface.</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={handleStartStudy}
                 className="group flex items-center gap-4 bg-white text-black px-10 py-5 rounded-full text-lg font-medium hover:shadow-2xl hover:-translate-y-1 transition-all"
               >
@@ -845,7 +844,7 @@ export default function App() {
           )}
 
           {step === "INSTRUCTIONS" && (
-            <motion.div 
+            <motion.div
               key="instr"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -862,13 +861,13 @@ export default function App() {
                 ].map((text, i) => (
                   <div key={i} className="flex gap-6 items-start">
                     <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center shrink-0 font-mono text-xs opacity-40">
-                      0{i+1}
+                      0{i + 1}
                     </div>
                     <p className="text-xl leading-snug opacity-80">{text}</p>
                   </div>
                 ))}
               </div>
-              <button 
+              <button
                 onClick={startTasks}
                 className="group flex items-center gap-4 bg-white text-black px-10 py-5 rounded-full text-lg font-medium hover:shadow-2xl hover:-translate-y-1 transition-all"
               >
@@ -878,7 +877,7 @@ export default function App() {
           )}
 
           {step === "PRACTICE_INTRO" && (
-            <motion.div 
+            <motion.div
               key="practice_intro"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -898,11 +897,11 @@ export default function App() {
                   What to expect
                 </h3>
                 <p className="text-base leading-relaxed opacity-70">
-                  During these practice trials, your responses will not be recorded for the final study. 
+                  During these practice trials, your responses will not be recorded for the final study.
                   Use this time to understand how the AI responses are presented and how to use the Accept/Reject buttons.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   setStep("TASK");
                   loadTrial(0);
@@ -915,14 +914,14 @@ export default function App() {
           )}
 
           {step === "TASK" && (
-            <motion.div 
+            <motion.div
               key="task"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="flex flex-col min-h-[70vh]"
             >
               <div className="fixed top-[72px] left-0 right-0 h-1 bg-white/5 z-40">
-                <motion.div 
+                <motion.div
                   className="h-full bg-white"
                   initial={{ width: 0 }}
                   animate={{ width: `${((currentTrial + 1) / stimuli.length) * 100}%` }}
@@ -938,26 +937,24 @@ export default function App() {
                   </div>
                 )}
                 {chatHistory.map((msg, i) => (
-                  <motion.div 
+                  <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
                   >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                      msg.role === "user" ? "bg-white/5" : "bg-white text-black"
-                    }`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${msg.role === "user" ? "bg-white/5" : "bg-white text-black"
+                      }`}>
                       {msg.role === "user" ? <User className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
                     </div>
                     <div className={`max-w-[85%] space-y-2 ${msg.role === "user" ? "text-right" : ""}`}>
                       <div className="text-[9px] font-mono uppercase tracking-widest opacity-30">
                         {msg.role === "user" ? "Participant" : "AI Assistant"}
                       </div>
-                      <div className={`p-5 rounded-2xl text-sm leading-relaxed ${
-                        msg.role === "user" 
-                          ? "bg-claude-card border border-claude-border shadow-sm" 
+                      <div className={`p-5 rounded-2xl text-sm leading-relaxed ${msg.role === "user"
+                          ? "bg-claude-card border border-claude-border shadow-sm"
                           : "bg-claude-card border border-claude-border shadow-md"
-                      }`}>
+                        }`}>
                         {msg.type === "code" ? (
                           <pre className="font-mono text-xs bg-black/40 text-white p-4 rounded-xl overflow-x-auto text-left border border-white/5">
                             <code>{msg.content}</code>
@@ -975,7 +972,7 @@ export default function App() {
               </div>
 
               {showDecisionButtons && (
-                <motion.div 
+                <motion.div
                   initial={{ y: 100 }}
                   animate={{ y: 0 }}
                   className="fixed bottom-0 left-0 right-0 p-6 bg-claude-bg/80 backdrop-blur-xl border-t border-claude-border z-50"
@@ -993,7 +990,7 @@ export default function App() {
                       </button>
                       <button
                         onClick={() => handleDecision("ACCEPT")}
-                        className="flex-1 flex items-center justify-center gap-3 bg-white text-black py-4 rounded-2xl font-bold hover:bg-emerald-600 hover:text-white transition-all active:scale-95"
+                        className="flex-1 flex items-center justify-center gap-3 bg-claude-card border-2 border-claude-border py-4 rounded-2xl font-bold hover:bg-emerald-500/10 hover:border-emerald-600 hover:text-emerald-600 transition-all active:scale-95"
                       >
                         <CheckCircle className="w-5 h-5" /> Accept
                       </button>
@@ -1005,7 +1002,7 @@ export default function App() {
           )}
 
           {step === "PRACTICE_COMPLETE" && (
-            <motion.div 
+            <motion.div
               key="practice_complete"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1025,11 +1022,11 @@ export default function App() {
                   Important Note
                 </h3>
                 <p className="text-base leading-relaxed opacity-70">
-                  From now on, your responses will be recorded as part of the main data collection. 
+                  From now on, your responses will be recorded as part of the main data collection.
                   Please continue to evaluate the code snippets as accurately and efficiently as possible.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => {
                   const nextIndex = currentTrial + 1;
                   setCurrentTrial(nextIndex);
@@ -1044,7 +1041,7 @@ export default function App() {
           )}
 
           {step === "FINISHED" && (
-            <motion.div 
+            <motion.div
               key="finished"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1102,11 +1099,11 @@ export default function App() {
                   <h3 className="font-bold text-lg">Debriefing</h3>
                 </div>
                 <p className="text-base leading-relaxed opacity-70">
-                  This study investigated how trust cues (like social proof and AI confidence indicators) affect how programmers evaluate AI assistance. 
+                  This study investigated how trust cues (like social proof and AI confidence indicators) affect how programmers evaluate AI assistance.
                   We are looking at whether these cues help or hinder your ability to spot errors in AI-generated code.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => setStep("DASHBOARD")}
                 className="text-[10px] font-mono uppercase tracking-widest border-b border-white/20 pb-1 hover:opacity-50 transition-opacity"
               >
