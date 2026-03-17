@@ -368,15 +368,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-claude-bg text-claude-text font-sans selection:bg-white selection:text-black">
       <header className="border-b border-claude-border p-4 flex justify-between items-center bg-claude-bg/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setStep("DASHBOARD")}>
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-black">
-            <BrainCircuit className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="font-serif italic text-lg leading-none">Trust Study</h1>
-            <p className="text-[9px] font-mono uppercase tracking-widest opacity-40 mt-1">HCI Research Platform</p>
-          </div>
-        </div>
+        <div className="cursor-pointer" onClick={() => setStep("DASHBOARD")} />
 
         <div className="flex items-center gap-4">
           {step === "TASK" && (
@@ -952,8 +944,8 @@ export default function App() {
                         {msg.role === "user" ? "Participant" : "AI Assistant"}
                       </div>
                       <div className={`p-5 rounded-2xl text-sm leading-relaxed ${msg.role === "user"
-                          ? "bg-claude-card border border-claude-border shadow-sm"
-                          : "bg-claude-card border border-claude-border shadow-md"
+                        ? "bg-claude-card border border-claude-border shadow-sm"
+                        : "bg-claude-card border border-claude-border shadow-md"
                         }`}>
                         {msg.type === "code" ? (
                           <pre className="font-mono text-xs bg-black/40 text-white p-4 rounded-xl overflow-x-auto text-left border border-white/5">
@@ -1115,12 +1107,12 @@ export default function App() {
       </main>
 
       <footer className="fixed bottom-0 left-0 right-0 p-4 flex justify-between items-center pointer-events-none z-50">
-        <div className="bg-claude-card/80 backdrop-blur-md border border-claude-border px-4 py-1.5 rounded-full text-[9px] font-mono uppercase tracking-widest opacity-40">
-          {step === "TASK" ? `Trial ${currentTrial + 1} / ${stimuli.length}` : "HCI Lab Platform"}
-        </div>
-        <div className="bg-claude-card/80 backdrop-blur-md border border-claude-border px-4 py-1.5 rounded-full text-[9px] font-mono uppercase tracking-widest opacity-40">
-          HCI Lab © 2026
-        </div>
+        {step === "TASK" && (
+          <div className="bg-claude-card/80 backdrop-blur-md border border-claude-border px-4 py-1.5 rounded-full text-[9px] font-mono uppercase tracking-widest opacity-40">
+            Trial {currentTrial + 1} / {stimuli.length}
+          </div>
+        )}
+
       </footer>
     </div>
   );
